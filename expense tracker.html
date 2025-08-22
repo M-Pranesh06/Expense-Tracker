@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker|Pranesh</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: lightblue;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 350px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; margin-bottom: 20px; color: #2c3e50; }
+    .balance {
+      font-size: 1.3em;
+      margin: 15px 0;
+      text-align: center;
+    }
+    .form-control { margin-bottom: 12px; }
+    label { display: block; margin-bottom: 5px; }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover { background: #219150; }
+    ul {
+      list-style: none;
+      margin-top: 15px;
+    }
+    li {
+      background: #f8f9fa;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-left: 6px solid #27ae60;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-btn:hover { background: #c0392b; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>💰 Expense Tracker</h2>
+    <div class="balance">Balance: <span id="balance">0</span> ₹</div>
+    <div class="form-control">
+      <label>Description</label>
+      <input type="text" id="desc" placeholder="Enter expense...">
+    </div>
+    <div class="form-control">
+      <label>Amount</label>
+      <input type="number" id="amount" placeholder="Enter amount...">
+    </div>
+    <button onclick="addExpense()">Add Expense</button>
+
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    let balance = 0;
+    const balanceEl = document.getElementById("balance");
+    const listEl = document.getElementById("list");
+
+    function addExpense() {
+      const desc = document.getElementById("desc").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+
+      if (desc === "" || isNaN(amount)) {
+        alert("Please enter valid details!");
+        return;
+      }
+
+      balance -= amount;
+      balanceEl.textContent = balance;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${desc} - ₹${amount}
+        <button class="delete-btn" onclick="removeExpense(this, ${amount})">X</button>
+      `;
+      listEl.appendChild(li);
+
+      document.getElementById("desc").value = "";
+      document.getElementById("amount").value = "";
+    }
+
+    function removeExpense(button, amount) {
+      balance += amount;
+      balanceEl.textContent = balance;
+      button.parentElement.remove();
+    }
+  </script>
+</body>
+</html>
